@@ -1,23 +1,27 @@
 pipeline {
     agent any
+
+    parameters {
+        string(name: 'ENVIRONMENT', defaultValue: 'dev', description: 'Specify environment')
+        booleanParam(name: 'RUN_TESTS', defaultValue: true, description: "Hurray")
+    }
     stages {
 
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/ashask2781/jenkins-project.git', branch: 'main'
-                sh "ls -ltr"
-            }
-        }
-        stage('Setup') {
-            steps {
-                sh "pip install -r requirements.txt"
-            }
-        }
         stage('Test') {
+            when {
+               expression {
+                        params.RUN_TESTS == true
+                    }
             steps {
-                sh "pytest"
-                sh "whoami"
+                echo "testing app"
+              }
+                
             }
         }
-    }
+        stage('Deploy') {
+            steps {
+                echo "deploying to ${params.ENVIRONMENT}"
+            }
+        }
+           }
 }
