@@ -15,10 +15,10 @@ pipeline {
                 echo "testing app"
               } 
             }
-        }
         stage('Deploy') {
             steps {
                 echo "deploying to ${params.ENVIRONMENT}"
             }
         }
+}
 }
